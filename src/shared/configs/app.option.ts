@@ -75,7 +75,7 @@ export const configOptions: ConfigModuleOptions = {
 export const mongooseOptions: MongooseModuleAsyncOptions = {
   useFactory: async (configService: ConfigService) => ({
     uri: configService.get<string>('MONGODB_URI')!,
-    dbName: `nestJSSkeleton${
+    dbName: `eCommerce${
       configService.get<string>('NODE_ENV')!.charAt(0).toUpperCase() +
       configService.get<string>('NODE_ENV')!.slice(1)
     }DB`,
