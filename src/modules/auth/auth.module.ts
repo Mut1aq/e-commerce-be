@@ -3,12 +3,15 @@ import { AuthController } from './auth.controller';
 import { LoginService } from './login.service';
 import { RegisterService } from './register.service';
 import { PasswordService } from './password.service';
-import { UsersModule } from 'modules/users/users.module';
 import { LogoutService } from './logout.service';
+import { UsersModule } from 'modules/system-users/users/users.module';
+import { CustomersModule } from 'modules/system-users/customers/customers.module';
+import { AdminsModule } from 'modules/system-users/admins/admins.module';
+import { StoreOwnersModule } from 'modules/system-users/store-owners/store-owners.module';
 
 @Module({
   controllers: [AuthController],
   providers: [LoginService, RegisterService, PasswordService, LogoutService],
-  imports: [UsersModule],
+  imports: [UsersModule, CustomersModule, AdminsModule, StoreOwnersModule],
 })
 export class AuthModule {}

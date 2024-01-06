@@ -4,8 +4,9 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CacheService } from 'core/lib/cache/cache.service';
 import { CacheObjectI } from 'core/lib/cache/interfaces/cache-object.interface';
-import { UsersService } from 'modules/users/users.service';
+import { UsersService } from 'modules/system-users/users/users.service';
 import { ResponseFromServiceI } from 'shared/interfaces/general/response-from-service.interface';
+import { TokenPayloadI } from 'shared/interfaces/http/token-payload.interface';
 import { LogUserInDto } from './dto/log-user-in.dto';
 
 @Injectable()
@@ -42,8 +43,9 @@ export class LoginService {
         HttpStatus.UNAUTHORIZED,
       );
 
-    const payload = {
+    const payload: TokenPayloadI = {
       sub: user.id,
+      role: user.role,
     };
 
     const userFromCache = await this.cacheService.get<CacheObjectI>(

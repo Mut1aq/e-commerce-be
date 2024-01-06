@@ -1,9 +1,11 @@
 export const ROUTES = {
   AUTH: {
     CONTROLLER: 'auth',
-    REGISTER_USER: 'register-user',
+    REGISTER_CUSTOMER: 'register-customer',
     LOG_USER_IN: 'login-user',
     LOG_OUT: 'logout',
+    REGISTER_ADMIN: 'register-admin',
+    REGISTER_STORE_OWNER: 'register-store-owner',
   },
 
   USERS: {
