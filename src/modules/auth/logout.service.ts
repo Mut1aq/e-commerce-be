@@ -1,8 +1,8 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { CacheService } from 'core/lib/cache/cache.service';
-import { UserDocument } from 'modules/users/types/user-document.type';
-import { UsersService } from 'modules/users/users.service';
 import { ResponseFromServiceI } from 'shared/interfaces/general/response-from-service.interface';
+import { UsersService } from 'modules/system-users/users/users.service';
+import { UserDocument } from 'modules/system-users/users/types/user-document.type';
 
 @Injectable()
 export class LogoutService {

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger/dist/decorators';
+import { Transform } from 'class-transformer';
 import { IsEmail, IsString } from 'class-validator';
 import { MaxLength, MinLength, IsNotEmpty } from 'class-validator';
 import { IsContainsLowercase } from 'core/decorators/is-contains-lower-case.decorator';
@@ -7,34 +8,6 @@ import { i18nValidationMessage } from 'nestjs-i18n';
 import { I18nTranslations } from 'resources/generated/i18n.generated';
 
 export class CreateUserDto {
-  @ApiProperty({
-    description: "User's username",
-    example: 'mut1aq',
-    isArray: false,
-    maxLength: 30,
-    minLength: 3,
-    name: 'username',
-    required: true,
-    type: String,
-  })
-  @MaxLength(30, {
-    message: i18nValidationMessage<I18nTranslations>('validation.minLength', {
-      max: 30,
-    }),
-  })
-  @MinLength(3, {
-    message: i18nValidationMessage<I18nTranslations>('validation.minLength', {
-      min: 3,
-    }),
-  })
-  @IsString({
-    message: i18nValidationMessage<I18nTranslations>('validation.isString'),
-  })
-  @IsNotEmpty({
-    message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty'),
-  })
-  username!: string;
-
   @ApiProperty({
     description: "User's email",
     example: 'mut1aq@gmail.com',
@@ -45,6 +18,7 @@ export class CreateUserDto {
     required: true,
     type: String,
   })
+  @Transform((param) => (param.value ?? '').toLowerCase().trim())
   @MaxLength(320, {
     message: i18nValidationMessage<I18nTranslations>('validation.minLength', {
       max: 320,

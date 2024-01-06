@@ -29,7 +29,18 @@
     "noImplicitReturns": true,
     "resolveJsonModule": true,
     "strict": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "paths": {
+      "@guards/*": ["./core/guards"],
+      "@interceptors/*": ["./core/interceptors"],
+      "@filters/*": ["./core/exception-filters"],
+      "@middlewares/*": ["./core/middlewares"],
+      "@lib/*": ["./core/lib"],
+      "@decorators/*": ["./core/decorators"],
+      "@modules/*": ["./core/modules"],
+      "@resources/*": ["./core/resources"],
+      "@shared/*": ["./core/shared"]
+    }
   },
   "include": ["test/**/*", "src/**/*"],
   "exclude": ["node_modules", "dist"],

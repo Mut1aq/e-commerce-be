@@ -3,6 +3,7 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from 'core/exception-filters/http-exception.filter';
 import { MongoDbDuplicateKeyFilter } from 'core/exception-filters/mongo-db-duplicate-key.filter';
 import { AccessTokenGuard } from 'core/guards/access-token.guard';
+import { RolesGuard } from 'core/guards/roles.guard';
 import { LoggingInterceptor } from 'core/interceptors/logging.interceptor';
 import { ResponseMappingInterceptor } from 'core/interceptors/response-mapping.interceptor';
 
@@ -10,6 +11,12 @@ const accessTokenGuardProvider: Provider<AccessTokenGuard> = {
   provide: APP_GUARD,
   useClass: AccessTokenGuard,
 };
+
+const rolesGuardProvider: Provider<RolesGuard> = {
+  provide: APP_GUARD,
+  useClass: RolesGuard,
+};
+
 const httpExceptionFilterProvider: Provider<HttpExceptionFilter> = {
   provide: APP_FILTER,
   useClass: HttpExceptionFilter,
@@ -35,7 +42,7 @@ export const filters = [
   httpExceptionFilterProvider,
   mongoDbDuplicateKeyFilterProvider,
 ];
-export const guards = [accessTokenGuardProvider];
+export const guards = [accessTokenGuardProvider, rolesGuardProvider];
 export const interceptors = [
   loggingInterceptorProvider,
   responseMappingInterceptorProvider,

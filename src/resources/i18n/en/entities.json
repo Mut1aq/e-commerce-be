@@ -4,5 +4,6 @@
   "room": "Room",
   "message": "Message",
   "email": "Email",
-  "notification": "Notification"
+  "notification": "Notification",
+  "country": "Country"
 }

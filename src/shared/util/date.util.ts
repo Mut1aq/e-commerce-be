@@ -8,5 +8,9 @@ export const formattedDateForConsole = () =>
     month: '2-digit',
   });
 
-export const ageToRestrict = () =>
-  new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString();
+export const thirteenYearsAgo = () =>
+  new Date(
+    new Date(
+      new Date().setFullYear(new Date().getFullYear() - 13),
+    ).toISOString(),
+  );

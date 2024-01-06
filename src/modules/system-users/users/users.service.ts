@@ -26,7 +26,7 @@ export class UsersService {
             email: credentials,
           },
           {
-            username: credentials,
+            'customerProperties.username': credentials,
           },
         ],
       })

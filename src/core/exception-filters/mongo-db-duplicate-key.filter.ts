@@ -4,7 +4,6 @@ import {
   ExceptionFilter,
   HttpStatus,
 } from '@nestjs/common';
-import { filter } from 'nestjs-conditional-exception-filter';
 import { MongoError, MongoServerError } from 'mongodb';
 import { RequestI } from 'shared/interfaces/http/request.interface';
 import { ExceptionI } from 'shared/interfaces/http/exception.interface';
@@ -14,17 +13,13 @@ import { ExceptionsLoggerService } from 'core/lib/logger/exceptions-logger.servi
 import { I18nContext } from 'nestjs-i18n';
 import { I18nTranslations } from 'resources/generated/i18n.generated';
 
-@Catch(
-  filter({
-    for: MongoError,
-    when: (error) => error.code === 11000,
-  }),
-)
+@Catch(MongoError, MongoServerError)
 export class MongoDbDuplicateKeyFilter implements ExceptionFilter {
   constructor(
     private readonly exceptionsLoggerService: ExceptionsLoggerService,
   ) {}
   catch(exception: MongoServerError, host: ArgumentsHost) {
+    if (exception.code !== 11000) return;
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<RequestI>();

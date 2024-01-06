@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { IsContainsLowercase } from 'core/decorators/is-contains-lower-case.decorator';
 import { i18nValidationMessage } from 'nestjs-i18n';
@@ -15,6 +16,7 @@ export class LogUserInDto {
     required: true,
     type: String,
   })
+  @Transform((param) => (param.value ?? '').toLowerCase().trim())
   @MaxLength(320, {
     message: i18nValidationMessage<I18nTranslations>('validation.minLength', {
       max: 320,

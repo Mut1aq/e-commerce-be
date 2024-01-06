@@ -8,7 +8,7 @@ export class FilterDto {
     description: 'number of objects to return',
     example: 15,
     isArray: false,
-    name: 'take',
+    name: 'limit',
     required: true,
     type: Number,
   })
@@ -16,7 +16,7 @@ export class FilterDto {
   @IsNotEmpty({
     message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty'),
   })
-  take!: number;
+  limit!: number;
 
   @ApiProperty({
     description: 'number of objects to skip over, ',
