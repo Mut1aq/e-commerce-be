@@ -19,13 +19,30 @@ export const ROUTES = {
     FOLLOWINGS: 'followings/:userIDToView',
   },
 
-  POSTS: {
-    CONTROLLER: 'posts',
+  STORES: {
+    CONTROLLER: 'stores',
     CREATE: '',
     FIND_ALL: '',
-    FIND_ONE: ':postID',
-    UPDATE_ONE: ':postID',
-    DELETE_ONE: ':postID',
-    FEED: 'feed',
+    FIND_ONE: ':storeID',
+    UPDATE_ONE: ':storeID',
+    DELETE_ONE: ':storeID',
+  },
+
+  PRODUCTS: {
+    CONTROLLER: 'products',
+    CREATE: '',
+    FIND_ALL: '',
+    FIND_ONE: ':productID',
+    UPDATE_ONE: ':productID',
+    DELETE_ONE: ':productID',
+  },
+
+  CATEGORIES: {
+    CONTROLLER: 'categories',
+    CREATE: '',
+    FIND_ALL: '',
+    FIND_ONE: ':categoryID',
+    UPDATE_ONE: ':categoryID',
+    DELETE_ONE: ':categoryID',
   },
 };

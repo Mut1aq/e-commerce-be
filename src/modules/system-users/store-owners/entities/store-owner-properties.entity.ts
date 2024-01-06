@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Store } from 'modules/store/entities/store.entity';
+import { Store } from 'modules/store-details/store/entities/store.entity';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 

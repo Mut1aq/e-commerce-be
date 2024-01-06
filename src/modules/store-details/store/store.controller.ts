@@ -1,12 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { StoreService } from './store.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
+import { Roles } from 'core/decorators/roles.decorator';
+import { Role } from 'shared/enums/role.enum';
+import { ApiTags } from '@nestjs/swagger';
+import { ROUTES } from 'shared/constants/routes.constant';
 
-@Controller('store')
+@ApiTags(ROUTES.STORES.CONTROLLER)
+@Controller(ROUTES.STORES.CONTROLLER)
 export class StoreController {
   constructor(private readonly storeService: StoreService) {}
 
+  @Roles([Role.STORE_OWNER])
   @Post()
   create(@Body() createStoreDto: CreateStoreDto) {
     return this.storeService.create(createStoreDto);

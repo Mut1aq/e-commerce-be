@@ -1,4 +1,5 @@
 import { Prop, SchemaFactory, ModelDefinition, Schema } from '@nestjs/mongoose';
+import { Category } from 'modules/store-details/categories/entities/category.entity';
 import { User } from 'modules/system-users/users/entities/user.entity';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
@@ -17,6 +18,9 @@ export class Store {
   @Prop({ type: String, maxlength: 2048, minlength: 3, required: true })
   logo!: string;
 
+  @Prop({ type: String, maxlength: 2048, minlength: 3, required: true })
+  coverPhoto!: string;
+
   @Prop({
     type: String,
     minlength: 6,
@@ -27,6 +31,12 @@ export class Store {
 
   @Prop({ type: Types.ObjectId, ref: SCHEMAS.USERS })
   author!: User;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.CATEGORIES }] })
+  categories!: Category[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.STORES }] })
+  branches!: Store[];
 }
 
 const storeSchema = SchemaFactory.createForClass(Store);

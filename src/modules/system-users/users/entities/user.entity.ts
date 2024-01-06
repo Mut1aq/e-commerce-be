@@ -10,7 +10,7 @@ import {
 import {
   storeOwnerPropertiesSchema,
   StoreOwnerProperties,
-} from 'modules/system-users/store-owners/entities/store-owner.entity';
+} from 'modules/system-users/store-owners/entities/store-owner-properties.entity';
 
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 import { Role } from 'shared/enums/role.enum';

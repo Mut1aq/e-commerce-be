@@ -41,6 +41,12 @@ export class AuthController {
     return this.logoutService.logUserOut(userID);
   }
 
+  // @Public()
+  // @Post(ROUTES.AUTH.REGISTER_ADMIN)
+  // registerAdmin(@Body() createAdminDto: CreateAdminDto) {
+  //   return this.registerService.registerAdmin(createAdminDto);
+  // }
+
   @Roles([Role.ADMIN])
   @Post(ROUTES.AUTH.REGISTER_STORE_OWNER)
   registerStoreOwner(@Body() createStoreOwnerDto: CreateStoreOwnerDto) {
