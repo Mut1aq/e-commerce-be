@@ -1,7 +1,8 @@
 export const SCHEMAS = {
-  USERS: 'User',
-  STORES: 'Store',
-  COUNTRIES: 'Country',
-  CATEGORIES: 'Category',
-  PRODUCTS: 'Product',
+  USER: 'User',
+  STORE: 'Store',
+  COUNTRY: 'Country',
+  CATEGORY: 'Category',
+  PRODUCT: 'Product',
+  VARIANT: 'Variant',
 };

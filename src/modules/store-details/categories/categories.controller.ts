@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { UserID } from 'core/decorators/user-id.decorator';
 import { ROUTES } from 'shared/constants/routes.constant';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -18,9 +19,17 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
-  @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoriesService.create(createCategoryDto);
+  @Post(ROUTES.CATEGORIES.CREATE)
+  create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @UserID() storeOwnerID: string,
+    @Param('storeID') storeID: string,
+  ) {
+    return this.categoriesService.create(
+      createCategoryDto,
+      storeOwnerID,
+      storeID,
+    );
   }
 
   @Get()

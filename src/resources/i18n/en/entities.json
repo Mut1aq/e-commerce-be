@@ -5,5 +5,8 @@
   "message": "Message",
   "email": "Email",
   "notification": "Notification",
-  "country": "Country"
+  "country": "Country",
+  "store": "Store",
+  "category": "Category",
+  "product": "Product"
 }

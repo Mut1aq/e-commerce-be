@@ -5,5 +5,8 @@
   "message": "رسالة",
   "email": "الايميل",
   "notification": "اشعار",
-  "country": "دولة"
+  "country": "دولة",
+  "store": "متجر",
+  "category": "فئة",
+  "product": "منتج"
 }

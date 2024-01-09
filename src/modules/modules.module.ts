@@ -3,7 +3,8 @@ import { AuthModule } from './auth/auth.module';
 import { CountriesModule } from './countries/countries.module';
 import { CategoriesModule } from './store-details/categories/categories.module';
 import { ProductsModule } from './store-details/products/products.module';
-import { StoreModule } from './store-details/store/store.module';
+import { StoresModule } from './store-details/stores/stores.module';
+import { VariantsModule } from './store-details/variants/variants.module';
 import { AdminsModule } from './system-users/admins/admins.module';
 import { CustomersModule } from './system-users/customers/customers.module';
 import { StoreOwnersModule } from './system-users/store-owners/store-owners.module';
@@ -13,13 +14,14 @@ import { UsersModule } from './system-users/users/users.module';
   imports: [
     UsersModule,
     AuthModule,
-    StoreModule,
+    StoresModule,
     CountriesModule,
     AdminsModule,
     CustomersModule,
     StoreOwnersModule,
     CategoriesModule,
     ProductsModule,
+    VariantsModule,
   ],
 })
 export class ModulesModule {}

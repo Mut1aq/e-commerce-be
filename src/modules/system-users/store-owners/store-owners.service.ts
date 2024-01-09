@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 import { Role } from 'shared/enums/role.enum';
 import { User } from '../users/entities/user.entity';
+import { UserDocument } from '../users/types/user-document.type';
 import { CreateStoreOwnerDto } from './dto/create-store-owner.dto';
 import { UpdateStoreOwnerDto } from './dto/update-store-owner.dto';
 
 @Injectable()
 export class StoreOwnersService {
   constructor(
-    @InjectModel(SCHEMAS.USERS) private readonly storeOwnerModel: Model<User>,
+    @InjectModel(SCHEMAS.USER) private readonly storeOwnerModel: Model<User>,
   ) {}
   createStoreOwnerForAuth(createStoreOwnerDto: CreateStoreOwnerDto) {
     const { email, password, ...restOfCreateStoreOwnerDto } =
@@ -40,5 +41,14 @@ export class StoreOwnersService {
 
   remove(id: number) {
     return `This action removes a #${id} storeOwner`;
+  }
+
+  findByID(userID: string): Promise<UserDocument | null> {
+    return this.storeOwnerModel
+      .findOne<UserDocument>({
+        _id: new Types.ObjectId(userID),
+        role: Role.STORE_OWNER,
+      })
+      .exec();
   }
 }

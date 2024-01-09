@@ -12,33 +12,47 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ROUTES } from 'shared/constants/routes.constant';
+import { UserID } from 'core/decorators/user-id.decorator';
 
 @ApiTags(ROUTES.PRODUCTS.CONTROLLER)
 @Controller(ROUTES.PRODUCTS.CONTROLLER)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+  @Post(ROUTES.PRODUCTS.CREATE)
+  create(
+    @Body() createProductDto: CreateProductDto,
+    @Param('categoryID') categoryID: string,
+    @UserID() storeOwnerID: string,
+  ) {
+    return this.productsService.create(
+      createProductDto,
+      categoryID,
+      storeOwnerID,
+    );
   }
 
-  @Get()
+  @Get(ROUTES.PRODUCTS.FIND_ALL)
   findAll() {
     return this.productsService.findAll();
   }
 
-  @Get(':id')
+  @Get(ROUTES.PRODUCTS.FIND_ALL_FOR_CATEGORY)
+  findAllForCategory() {
+    return this.productsService.findAllForCategory();
+  }
+
+  @Get(ROUTES.PRODUCTS.FIND_ONE)
   findOne(@Param('id') id: string) {
     return this.productsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch(ROUTES.PRODUCTS.UPDATE_ONE)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productsService.update(+id, updateProductDto);
   }
 
-  @Delete(':id')
+  @Delete(ROUTES.PRODUCTS.DELETE_ONE)
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
   }

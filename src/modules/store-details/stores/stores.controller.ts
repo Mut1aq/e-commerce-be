@@ -7,42 +7,46 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { StoreService } from './store.service';
+import { StoresService } from './stores.service';
 import { CreateStoreDto } from './dto/create-store.dto';
 import { UpdateStoreDto } from './dto/update-store.dto';
 import { Roles } from 'core/decorators/roles.decorator';
 import { Role } from 'shared/enums/role.enum';
 import { ApiTags } from '@nestjs/swagger';
 import { ROUTES } from 'shared/constants/routes.constant';
+import { UserID } from 'core/decorators/user-id.decorator';
 
 @ApiTags(ROUTES.STORES.CONTROLLER)
 @Controller(ROUTES.STORES.CONTROLLER)
-export class StoreController {
-  constructor(private readonly storeService: StoreService) {}
+export class StoresController {
+  constructor(private readonly storesService: StoresService) {}
 
   @Roles([Role.STORE_OWNER])
   @Post()
-  create(@Body() createStoreDto: CreateStoreDto) {
-    return this.storeService.create(createStoreDto);
+  create(
+    @Body() createStoreDto: CreateStoreDto,
+    @UserID() storeOwnerID: string,
+  ) {
+    return this.storesService.create(createStoreDto, storeOwnerID);
   }
 
   @Get()
   findAll() {
-    return this.storeService.findAll();
+    return this.storesService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.storeService.findOne(+id);
+    return this.storesService.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStoreDto: UpdateStoreDto) {
-    return this.storeService.update(+id, updateStoreDto);
+    return this.storesService.update(+id, updateStoreDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.storeService.remove(+id);
+    return this.storesService.remove(+id);
   }
 }

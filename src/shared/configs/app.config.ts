@@ -2,6 +2,7 @@ import { Provider } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpExceptionFilter } from 'core/exception-filters/http-exception.filter';
 import { MongoDbDuplicateKeyFilter } from 'core/exception-filters/mongo-db-duplicate-key.filter';
+import { MongooseValidationFilter } from 'core/exception-filters/mongoose-validation.filter';
 import { AccessTokenGuard } from 'core/guards/access-token.guard';
 import { RolesGuard } from 'core/guards/roles.guard';
 import { LoggingInterceptor } from 'core/interceptors/logging.interceptor';
@@ -38,9 +39,15 @@ const mongoDbDuplicateKeyFilterProvider: Provider<MongoDbDuplicateKeyFilter> = {
   useClass: MongoDbDuplicateKeyFilter,
 };
 
+const mongooseValidationFilterProvider: Provider<MongooseValidationFilter> = {
+  provide: APP_FILTER,
+  useClass: MongooseValidationFilter,
+};
+
 export const filters = [
   httpExceptionFilterProvider,
   mongoDbDuplicateKeyFilterProvider,
+  mongooseValidationFilterProvider,
 ];
 export const guards = [accessTokenGuardProvider, rolesGuardProvider];
 export const interceptors = [

@@ -9,7 +9,7 @@ import { UserDocument } from './types/user-document.type';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(SCHEMAS.USERS) private readonly userModel: Model<User>,
+    @InjectModel(SCHEMAS.USER) private readonly userModel: Model<User>,
   ) {}
 
   createUserForAuth(createUserDto: CreateUserDto) {

@@ -11,7 +11,7 @@ import { Country } from './entities/country.entity';
 @Injectable()
 export class CountriesService {
   constructor(
-    @InjectModel(SCHEMAS.COUNTRIES)
+    @InjectModel(SCHEMAS.COUNTRY)
     private readonly countryModel: Model<Country>,
   ) {}
 
