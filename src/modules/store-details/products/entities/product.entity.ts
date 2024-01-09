@@ -1,9 +1,9 @@
 import { Prop, SchemaFactory, Schema, ModelDefinition } from '@nestjs/mongoose';
 import { Category } from 'modules/store-details/categories/entities/category.entity';
+import { Variant } from 'modules/store-details/variants/entities/variant.entity';
+import { User } from 'modules/system-users/users/entities/user.entity';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
-import { variantProp } from '../constants/variant-prop.constant';
-import { VariantI } from '../interfaces/variant.interface';
 
 @Schema({ timestamps: true })
 export class Product {
@@ -12,7 +12,6 @@ export class Product {
     minlength: 3,
     maxlength: 30,
     required: true,
-    unique: true,
   })
   name!: string;
 
@@ -21,9 +20,42 @@ export class Product {
     minlength: 10,
     maxlength: 2200,
     required: true,
-    unique: true,
   })
   description!: string;
+
+  @Prop({
+    type: Number,
+    min: 0,
+    max: 100000,
+    required: true,
+  })
+  price!: number;
+
+  @Prop({
+    type: Number,
+    min: 0,
+    max: 10000,
+    required: true,
+  })
+  quantity!: number;
+
+  @Prop({
+    type: Number,
+    min: 0,
+    max: 99999,
+    required: false,
+    default: undefined,
+  })
+  discountedPrice?: number;
+
+  @Prop({
+    type: Number,
+    min: 1,
+    max: 99,
+    required: false,
+    default: undefined,
+  })
+  discountedRate?: number;
 
   @Prop({
     type: [{ type: String, maxlength: 2048, minlength: 3, required: true }],
@@ -35,16 +67,19 @@ export class Product {
   })
   videos!: string[];
 
-  @Prop(variantProp)
-  variant!: VariantI;
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.VARIANT }] })
+  variants!: Variant[];
 
-  @Prop({ type: Types.ObjectId, ref: SCHEMAS.CATEGORIES })
+  @Prop({ type: Types.ObjectId, ref: SCHEMAS.CATEGORY })
   category!: Category;
+
+  @Prop({ type: Types.ObjectId, ref: SCHEMAS.USER })
+  author!: User;
 }
 
 const productSchema = SchemaFactory.createForClass(Product);
 
 export const productMongooseModel: ModelDefinition = {
-  name: SCHEMAS.CATEGORIES,
+  name: SCHEMAS.PRODUCT,
   schema: productSchema,
 };

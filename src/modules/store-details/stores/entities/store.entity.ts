@@ -11,7 +11,6 @@ export class Store {
     minlength: 3,
     maxlength: 30,
     required: true,
-    unique: true,
   })
   name!: string;
 
@@ -29,19 +28,19 @@ export class Store {
   })
   phoneNumber!: string;
 
-  @Prop({ type: Types.ObjectId, ref: SCHEMAS.USERS })
+  @Prop({ type: Types.ObjectId, ref: SCHEMAS.USER })
   author!: User;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.CATEGORIES }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.CATEGORY }] })
   categories!: Category[];
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.STORES }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.STORE }] })
   branches!: Store[];
 }
 
 const storeSchema = SchemaFactory.createForClass(Store);
 
 export const storeMongooseModel: ModelDefinition = {
-  name: SCHEMAS.STORES,
+  name: SCHEMAS.STORE,
   schema: storeSchema,
 };

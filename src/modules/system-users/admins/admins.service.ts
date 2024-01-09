@@ -10,7 +10,7 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 @Injectable()
 export class AdminsService {
   constructor(
-    @InjectModel(SCHEMAS.USERS) private readonly adminModel: Model<User>,
+    @InjectModel(SCHEMAS.USER) private readonly adminModel: Model<User>,
   ) {}
   createAdminForAuth(createAdminDto: CreateAdminDto) {
     const createdAdmin = new this.adminModel(createAdminDto);

@@ -10,7 +10,7 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 @Injectable()
 export class CustomersService {
   constructor(
-    @InjectModel(SCHEMAS.USERS) private readonly customerModel: Model<User>,
+    @InjectModel(SCHEMAS.USER) private readonly customerModel: Model<User>,
   ) {}
   createCustomerForAuth(createCustomerDto: CreateCustomerDto) {
     const { email, password, ...restOfCreateCustomerDto } = createCustomerDto;

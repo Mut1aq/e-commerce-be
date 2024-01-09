@@ -30,16 +30,26 @@ export const ROUTES = {
 
   PRODUCTS: {
     CONTROLLER: 'products',
-    CREATE: '',
+    CREATE: ':categoryID',
     FIND_ALL: '',
+    FIND_ALL_FOR_CATEGORY: ':categoryID',
     FIND_ONE: ':productID',
     UPDATE_ONE: ':productID',
     DELETE_ONE: ':productID',
   },
 
+  VARIANTS: {
+    CONTROLLER: 'variants',
+    CREATE: ':productID',
+    FIND_ALL: ':productID',
+    FIND_ONE: ':variantID',
+    UPDATE_ONE: ':variantID',
+    DELETE_ONE: ':variantID',
+  },
+
   CATEGORIES: {
     CONTROLLER: 'categories',
-    CREATE: '',
+    CREATE: ':storeID',
     FIND_ALL: '',
     FIND_ONE: ':categoryID',
     UPDATE_ONE: ':categoryID',

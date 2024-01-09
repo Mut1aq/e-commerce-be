@@ -70,6 +70,6 @@ export class User {
 const UserSchema = SchemaFactory.createForClass(User);
 
 export const userMongooseModel: ModelDefinition = {
-  name: SCHEMAS.USERS,
+  name: SCHEMAS.USER,
   schema: UserSchema,
 };

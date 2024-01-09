@@ -29,6 +29,9 @@ export type I18nTranslations = {
         "email": string;
         "notification": string;
         "country": string;
+        "store": string;
+        "category": string;
+        "product": string;
     };
     "shared": {
         "success": {

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Store } from 'modules/store-details/store/entities/store.entity';
+import { Store } from 'modules/store-details/stores/entities/store.entity';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 
@@ -40,7 +40,7 @@ export class StoreOwnerProperties {
   })
   phoneNumber!: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.STORES }] })
+  @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.STORE }] })
   stores!: Store[];
 }
 
