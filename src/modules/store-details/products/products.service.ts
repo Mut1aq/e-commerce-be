@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { StoreOwnersService } from 'modules/system-users/store-owners/store-owners.service';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 import { CategoriesService } from '../categories/categories.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { ProductDocument } from './types/product-document.type';
 
 @Injectable()
 export class ProductsService {
@@ -72,5 +73,63 @@ export class ProductsService {
 
   remove(id: number) {
     return `This action removes a #${id} product`;
+  }
+
+  findByIDAndStoreOwner(productID: string, storeOwnerID: string) {
+    return this.productModel
+      .findOne<ProductDocument>({
+        _id: new Types.ObjectId(productID),
+        author: new Types.ObjectId(storeOwnerID),
+      })
+      .populate<ProductDocument>({
+        path: 'category',
+        model: SCHEMAS.CATEGORY,
+        select: { author: 1 },
+        match: { author: new Types.ObjectId(storeOwnerID) },
+        populate: {
+          path: 'store',
+          model: SCHEMAS.STORE,
+          select: { author: 1 },
+          match: { author: new Types.ObjectId(storeOwnerID) },
+        },
+      });
+  }
+
+  findByIDAndStoreOwnerAndPopulateVariants(
+    productID: string,
+    storeOwnerID: string,
+  ) {
+    return this.productModel
+      .findOne<ProductDocument>({
+        _id: new Types.ObjectId(productID),
+        author: new Types.ObjectId(storeOwnerID),
+      })
+      .populate<ProductDocument>([
+        {
+          path: 'category',
+          model: SCHEMAS.CATEGORY,
+          select: { author: 1 },
+          match: { author: new Types.ObjectId(storeOwnerID) },
+          populate: {
+            path: 'store',
+            model: SCHEMAS.STORE,
+            select: { author: 1 },
+            match: { author: new Types.ObjectId(storeOwnerID) },
+          },
+        },
+        {
+          path: 'variants',
+          model: SCHEMAS.VARIANT,
+        },
+      ]);
+  }
+
+  removeVariantsByIDs(productID: string, variantIDs: Types.ObjectId[]) {
+    return this.productModel
+      .updateOne<ProductDocument>(
+        { _id: new Types.ObjectId(productID) },
+        { $pullAll: { variants: variantIDs } },
+      )
+      .exec();
   }
 }

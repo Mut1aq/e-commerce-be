@@ -17,15 +17,21 @@ import { formattedDateForConsole } from 'shared/util/date.util';
 export class LoggerService implements NestJSLoggerService {
   constructor(private readonly configService: ConfigService) {}
   log(message: string, context: string) {
-    console.log(this.formatLog(message + ' ✔', 'log', logColor, context));
+    console.log(
+      this.formatLog(message + ' ✔', 'log', logColor, context ?? 'LOGGER'),
+    );
   }
 
   error(message: string, context: string) {
-    console.log(this.formatLog(message + ' ❗', 'error', errorColor, context));
+    console.log(
+      this.formatLog(message + ' ❗', 'error', errorColor, context ?? 'LOGGER'),
+    );
   }
 
   warn(message: string, context: string) {
-    console.log(this.formatLog(message + ' ❓', 'warn', warnColor, context));
+    console.log(
+      this.formatLog(message + ' ❓', 'warn', warnColor, context ?? 'LOGGER'),
+    );
   }
 
   formatLog(

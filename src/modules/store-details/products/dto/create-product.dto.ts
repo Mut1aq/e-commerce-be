@@ -145,14 +145,14 @@ export class CreateProductDto {
     example: 50.5,
     isArray: false,
     minimum: 0,
-    maximum: 100000,
+    maximum: 99999,
     name: 'price',
-    required: false,
+    required: true,
     type: Number,
   })
-  @Max(100000, {
+  @Max(99999, {
     message: i18nValidationMessage<I18nTranslations>('validation.max', {
-      min: 100000,
+      min: 99999,
     }),
   })
   @Min(0, {

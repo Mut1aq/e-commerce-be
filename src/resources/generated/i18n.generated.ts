@@ -32,6 +32,7 @@ export type I18nTranslations = {
         "store": string;
         "category": string;
         "product": string;
+        "variant": string;
     };
     "shared": {
         "success": {

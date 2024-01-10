@@ -9,6 +9,7 @@ import { CategoriesModule } from '../categories/categories.module';
 @Module({
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService],
   imports: [
     MongooseModule.forFeature([productMongooseModel]),
     StoreOwnersModule,

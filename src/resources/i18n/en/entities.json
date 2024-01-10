@@ -8,5 +8,6 @@
   "country": "Country",
   "store": "Store",
   "category": "Category",
-  "product": "Product"
+  "product": "Product",
+  "variant": "Variant"
 }

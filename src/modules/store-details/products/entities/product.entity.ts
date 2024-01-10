@@ -1,7 +1,7 @@
 import { Prop, SchemaFactory, Schema, ModelDefinition } from '@nestjs/mongoose';
-import { Category } from 'modules/store-details/categories/entities/category.entity';
-import { Variant } from 'modules/store-details/variants/entities/variant.entity';
-import { User } from 'modules/system-users/users/entities/user.entity';
+import { CategoryDocument } from 'modules/store-details/categories/types/category-document.type';
+import { VariantDocument } from 'modules/store-details/variants/types/variant-document.type';
+import { UserDocument } from 'modules/system-users/users/types/user-document.type';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 
@@ -68,13 +68,13 @@ export class Product {
   videos!: string[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.VARIANT }] })
-  variants!: Variant[];
+  variants!: VariantDocument[];
 
   @Prop({ type: Types.ObjectId, ref: SCHEMAS.CATEGORY })
-  category!: Category;
+  category!: CategoryDocument;
 
   @Prop({ type: Types.ObjectId, ref: SCHEMAS.USER })
-  author!: User;
+  author!: UserDocument;
 }
 
 const productSchema = SchemaFactory.createForClass(Product);
