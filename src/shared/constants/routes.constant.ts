@@ -43,7 +43,7 @@ export const ROUTES = {
     CREATE: ':productID',
     FIND_ALL: ':productID',
     FIND_ONE: ':variantID',
-    UPDATE_ONE: ':variantID',
+    UPDATE_ONE: ':productID/:variantID',
     DELETE_ONE: ':variantID',
   },
 

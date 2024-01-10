@@ -1,33 +1,63 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { VariantsService } from './variants.service';
-import { CreateVariantDto } from './dto/create-variant.dto';
+import { CreateVariantsDto } from './dto/create-variants.dto';
 import { UpdateVariantDto } from './dto/update-variant.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ROUTES } from 'shared/constants/routes.constant';
+import { UserID } from 'core/decorators/user-id.decorator';
 
-@Controller('variants')
+@ApiTags(ROUTES.VARIANTS.CONTROLLER)
+@Controller(ROUTES.VARIANTS.CONTROLLER)
 export class VariantsController {
   constructor(private readonly variantsService: VariantsService) {}
 
-  @Post()
-  create(@Body() createVariantDto: CreateVariantDto) {
-    return this.variantsService.create(createVariantDto);
+  @Post(ROUTES.VARIANTS.CREATE)
+  create(
+    @Body() createVariantsDto: CreateVariantsDto,
+    @UserID() storeOwnerID: string,
+    @Param('productID') productID: string,
+  ) {
+    return this.variantsService.create(
+      createVariantsDto,
+      storeOwnerID,
+      productID,
+    );
   }
 
-  @Get()
+  @Get(ROUTES.VARIANTS.FIND_ALL)
   findAll() {
     return this.variantsService.findAll();
   }
 
-  @Get(':id')
+  @Get(ROUTES.VARIANTS.FIND_ONE)
   findOne(@Param('id') id: string) {
     return this.variantsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVariantDto: UpdateVariantDto) {
-    return this.variantsService.update(+id, updateVariantDto);
+  @Patch(ROUTES.VARIANTS.UPDATE_ONE)
+  update(
+    @Param('variantID') variantID: string,
+    @Param('productID') productID: string,
+    @Body() updateVariantDto: UpdateVariantDto,
+    @UserID() storeOwnerID: string,
+  ) {
+    return this.variantsService.update(
+      variantID,
+      productID,
+      updateVariantDto,
+      storeOwnerID,
+    );
   }
 
-  @Delete(':id')
+  @Delete(ROUTES.VARIANTS.DELETE_ONE)
   remove(@Param('id') id: string) {
     return this.variantsService.remove(+id);
   }
