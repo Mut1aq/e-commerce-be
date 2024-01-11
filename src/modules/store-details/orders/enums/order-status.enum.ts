@@ -1,0 +1,10 @@
+export enum OrderStatus {
+  PENDING = 1,
+  APPROVED,
+  REJECTED = 3,
+  BEING_PACKAGED,
+  SHIPPED = 5,
+  BEING_DELIVERED,
+  DELIVERED = 7,
+  CANCELED,
+}

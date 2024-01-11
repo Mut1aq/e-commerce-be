@@ -5,4 +5,6 @@ export const SCHEMAS = {
   CATEGORY: 'Category',
   PRODUCT: 'Product',
   VARIANT: 'Variant',
+  ORDER: 'Order',
+  REVIEW: 'Review',
 };

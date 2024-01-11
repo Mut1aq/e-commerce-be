@@ -1,9 +1,10 @@
 import { Prop, SchemaFactory, ModelDefinition, Schema } from '@nestjs/mongoose';
-import { Product } from 'modules/store-details/products/entities/product.entity';
-import { Store } from 'modules/store-details/stores/entities/store.entity';
-import { User } from 'modules/system-users/users/entities/user.entity';
+import { ProductDocument } from 'modules/store-details/products/types/product-document.type';
+import { StoreDocument } from 'modules/store-details/stores/types/store-document.type';
+import { UserDocument } from 'modules/system-users/users/types/user-document.type';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
+import { CategoryDocument } from '../types/category-document.type';
 
 @Schema({ timestamps: true })
 export class Category {
@@ -19,16 +20,16 @@ export class Category {
   coverPhoto!: string;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.PRODUCT }] })
-  products!: Product[];
+  products!: ProductDocument[];
 
   @Prop({ type: Types.ObjectId, ref: SCHEMAS.STORE })
-  store!: Store;
+  store!: StoreDocument;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.CATEGORY }] })
-  subCategories!: Category[];
+  subCategories!: CategoryDocument[];
 
   @Prop({ type: Types.ObjectId, ref: SCHEMAS.USER })
-  author!: User;
+  author!: UserDocument;
 }
 
 const categorySchema = SchemaFactory.createForClass(Category);

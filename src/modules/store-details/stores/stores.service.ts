@@ -29,7 +29,7 @@ export class StoresService {
 
     const createdStore = await storeToCreate.save();
     storeOwner.storeOwnerProperties?.stores.push(
-      new Types.ObjectId(createdStore._id) as unknown as Store,
+      new Types.ObjectId(createdStore._id) as unknown as StoreDocument,
     );
 
     await storeOwner.save();
