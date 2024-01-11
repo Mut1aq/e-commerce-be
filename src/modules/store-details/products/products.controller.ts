@@ -53,7 +53,10 @@ export class ProductsController {
   }
 
   @Delete(ROUTES.PRODUCTS.DELETE_ONE)
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  remove(
+    @Param('productID') productID: string,
+    @UserID() storeOwnerID: string,
+  ) {
+    return this.productsService.remove(productID, storeOwnerID);
   }
 }

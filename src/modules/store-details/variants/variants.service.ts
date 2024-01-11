@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { StoreOwnersService } from 'modules/system-users/store-owners/store-owners.service';
 import { Model, Types } from 'mongoose';
@@ -13,7 +19,10 @@ import { VariantDocument } from './types/variant-document.type';
 export class VariantsService {
   constructor(
     @InjectModel(SCHEMAS.VARIANT) private readonly variantModel: Model<Variant>,
+
     private readonly storeOwnersService: StoreOwnersService,
+
+    @Inject(forwardRef(() => ProductsService))
     private readonly productsService: ProductsService,
   ) {}
   async create(
@@ -151,5 +160,11 @@ export class VariantsService {
 
   remove(id: number) {
     return `This action removes a #${id} variant`;
+  }
+
+  removeAllVariantsByProductID(productID: string) {
+    return this.variantModel
+      .deleteMany({ product: new Types.ObjectId(productID) })
+      .exec();
   }
 }

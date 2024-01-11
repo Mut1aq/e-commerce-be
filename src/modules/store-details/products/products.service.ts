@@ -4,6 +4,7 @@ import { StoreOwnersService } from 'modules/system-users/store-owners/store-owne
 import { Model, Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 import { CategoriesService } from '../categories/categories.service';
+import { VariantsService } from '../variants/variants.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
@@ -15,6 +16,7 @@ export class ProductsService {
     @InjectModel(SCHEMAS.PRODUCT) private readonly productModel: Model<Product>,
     private readonly storeOwnersService: StoreOwnersService,
     private readonly categoriesService: CategoriesService,
+    private readonly variantsService: VariantsService,
   ) {}
   async create(
     createProductDto: CreateProductDto,
@@ -31,7 +33,7 @@ export class ProductsService {
         "Store Owner Doesn't exist",
         HttpStatus.NOT_FOUND,
       );
-    if (!category)
+    if (!category || !category.store)
       throw new HttpException("Category  Doesn't exist", HttpStatus.NOT_FOUND);
 
     const productToCreate = new this.productModel(createProductDto);
@@ -39,7 +41,7 @@ export class ProductsService {
     productToCreate.category = category;
     const createdProduct = await productToCreate.save();
 
-    category.products.push(createdProduct._id as unknown as Product);
+    category.products.push(createdProduct._id as unknown as ProductDocument);
     await category.save();
 
     return {
@@ -71,8 +73,31 @@ export class ProductsService {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(productID: string, storeOwnerID: string) {
+    const deletedProduct = await this.productModel.findOneAndDelete({
+      _id: new Types.ObjectId(productID),
+      author: new Types.ObjectId(storeOwnerID),
+    });
+
+    if (!deletedProduct)
+      throw new HttpException("Product Doesn't exist", HttpStatus.NOT_FOUND);
+
+    await Promise.all([
+      this.variantsService.removeAllVariantsByProductID(productID),
+      this.categoriesService.removeProductFromCategory(productID),
+    ]);
+
+    return {
+      data: deletedProduct.toObject({
+        flattenObjectIds: true,
+        depopulate: true,
+      }),
+      httpStatus: HttpStatus.CREATED,
+      message: {
+        translationKey: 'shared.success.delete',
+        args: { entity: 'entities.product' },
+      },
+    };
   }
 
   findByIDAndStoreOwner(productID: string, storeOwnerID: string) {

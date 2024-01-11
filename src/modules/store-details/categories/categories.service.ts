@@ -42,7 +42,7 @@ export class CategoriesService {
     categoryToCreate.author = storeOwner;
     const createdCategory = await categoryToCreate.save();
 
-    store.categories.push(categoryToCreate._id as unknown as Category);
+    store.categories.push(categoryToCreate._id as unknown as CategoryDocument);
     await store.save();
 
     return {
@@ -89,5 +89,23 @@ export class CategoriesService {
         match: { author: new Types.ObjectId(storeOwnerID) },
       })
       .exec();
+  }
+
+  async removeProductFromCategory(productID: string) {
+    const category = await this.categoryModel
+      .findOne<CategoryDocument>({ products: new Types.ObjectId(productID) })
+      .exec();
+
+    if (!category)
+      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
+
+    const productToDeleteIndex = category?.products.findIndex(
+      (product) => product + '' === productID,
+    );
+    if (productToDeleteIndex === -1)
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
+
+    category.products.splice(productToDeleteIndex, 1);
+    return category.save();
   }
 }
