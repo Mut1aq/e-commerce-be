@@ -10,7 +10,7 @@ import {
 import { CreateUserDto } from 'modules/system-users/users/dto/create-user.dto';
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { I18nTranslations } from 'resources/generated/i18n.generated';
-import { thirteenYearsAgo } from 'shared/util/date.util';
+import { nYearsAgo } from 'shared/util/date.util';
 
 export class CreateCustomerDto extends CreateUserDto {
   @ApiProperty({
@@ -135,7 +135,7 @@ export class CreateCustomerDto extends CreateUserDto {
     minimum: 13,
   })
   @Transform(({ value }) => new Date(value))
-  @MaxDate(thirteenYearsAgo())
+  @MaxDate(nYearsAgo(13))
   @IsNotEmpty({
     message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty', {
       property: 'Birth Day',

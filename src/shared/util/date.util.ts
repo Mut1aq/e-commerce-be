@@ -8,9 +8,9 @@ export const formattedDateForConsole = () =>
     month: '2-digit',
   });
 
-export const thirteenYearsAgo = () =>
+export const nYearsAgo = (years: number) =>
   new Date(
     new Date(
-      new Date().setFullYear(new Date().getFullYear() - 13),
+      new Date().setFullYear(new Date().getFullYear() - years),
     ).toISOString(),
   );

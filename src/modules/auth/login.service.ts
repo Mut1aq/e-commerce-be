@@ -46,6 +46,7 @@ export class LoginService {
     const payload: TokenPayloadI = {
       sub: user.id,
       role: user.role,
+      permission: user.storeEmployeeProperties?.permission,
     };
 
     const userFromCache = await this.cacheService.get<CacheObjectI>(

@@ -8,6 +8,10 @@ import {
   customerPropertiesSchema,
 } from 'modules/system-users/customers/entities/customer-properties.entity';
 import {
+  storeEmployeePropertiesSchema,
+  StoreEmployeeProperties,
+} from 'modules/system-users/store-employees/entities/store-employee-properties.entity';
+import {
   storeOwnerPropertiesSchema,
   StoreOwnerProperties,
 } from 'modules/system-users/store-owners/entities/store-owner-properties.entity';
@@ -51,6 +55,13 @@ export class User {
     default: undefined,
   })
   storeOwnerProperties?: StoreOwnerProperties;
+
+  @Prop({
+    type: storeEmployeePropertiesSchema,
+    required: false,
+    default: undefined,
+  })
+  storeEmployeeProperties?: StoreEmployeeProperties;
 
   @Prop({
     type: customerPropertiesSchema,

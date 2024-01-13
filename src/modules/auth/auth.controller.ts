@@ -5,6 +5,7 @@ import { Public } from 'core/decorators/public.decorator';
 import { Roles } from 'core/decorators/roles.decorator';
 import { UserID } from 'core/decorators/user-id.decorator';
 import { CreateCustomerDto } from 'modules/system-users/customers/dto/create-customer.dto';
+import { CreateStoreEmployeeDto } from 'modules/system-users/store-employees/dto/create-store-employee.dto';
 import { CreateStoreOwnerDto } from 'modules/system-users/store-owners/dto/create-store-owner.dto';
 import { ROUTES } from 'shared/constants/routes.constant';
 import { Role } from 'shared/enums/role.enum';
@@ -51,5 +52,17 @@ export class AuthController {
   @Post(ROUTES.AUTH.REGISTER_STORE_OWNER)
   registerStoreOwner(@Body() createStoreOwnerDto: CreateStoreOwnerDto) {
     return this.registerService.registerStoreOwner(createStoreOwnerDto);
+  }
+
+  @Roles([Role.STORE_OWNER, Role.STORE_EMPLOYEE])
+  @Post(ROUTES.AUTH.REGISTER_STORE_EMPLOYEE)
+  registerStoreEmployee(
+    @Body() createStoreEmployeeDto: CreateStoreEmployeeDto,
+    @UserID() creatorID: string,
+  ) {
+    return this.registerService.registerStoreEmployee(
+      createStoreEmployeeDto,
+      creatorID,
+    );
   }
 }

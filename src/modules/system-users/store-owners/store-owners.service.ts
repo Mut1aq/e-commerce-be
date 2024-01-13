@@ -51,4 +51,40 @@ export class StoreOwnersService {
       })
       .exec();
   }
+
+  // findByID(
+  //   userID: string,
+  //   permission: Partial<PermissionI> & { [key: string]: Action[] },
+  // ): Promise<UserDocument | null> {
+  //   const domain = Object.keys(permission)[0];
+  //   return this.storeOwnerModel
+  //     .findOne<UserDocument>({
+  //       $and: [
+  //         {
+  //           $or: [
+  //             {
+  //               $and: [
+  //                 {
+  //                   ['storeEmployeeProperties.permission' + domain]: {
+  //                     $in: permission[domain],
+  //                   },
+  //                 },
+  //                 {
+  //                   role: Role.STORE_EMPLOYEE,
+  //                 },
+  //               ],
+  //             },
+
+  //             {
+  //               role: Role.STORE_OWNER,
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           _id: new Types.ObjectId(userID),
+  //         },
+  //       ],
+  //     })
+  //     .exec();
+  // }
 }

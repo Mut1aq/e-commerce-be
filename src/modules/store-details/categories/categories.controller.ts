@@ -8,9 +8,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Permissions } from 'core/decorators/permissions.decorator';
+import { Roles } from 'core/decorators/roles.decorator';
 import { UserID } from 'core/decorators/user-id.decorator';
 import { ROUTES } from 'shared/constants/routes.constant';
+import { Role } from 'shared/enums/role.enum';
 import { CategoriesService } from './categories.service';
+import { createCategory } from './constants/permissions.constant';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
@@ -19,6 +23,8 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @Permissions(createCategory)
+  @Roles([Role.STORE_EMPLOYEE, Role.STORE_OWNER])
   @Post(ROUTES.CATEGORIES.CREATE)
   create(
     @Body() createCategoryDto: CreateCategoryDto,

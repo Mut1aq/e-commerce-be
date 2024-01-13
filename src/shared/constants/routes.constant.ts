@@ -6,6 +6,7 @@ export const ROUTES = {
     LOG_OUT: 'logout',
     REGISTER_ADMIN: 'register-admin',
     REGISTER_STORE_OWNER: 'register-store-owner',
+    REGISTER_STORE_EMPLOYEE: 'register-store-employee',
   },
 
   USERS: {

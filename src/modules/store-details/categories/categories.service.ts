@@ -26,6 +26,8 @@ export class CategoriesService {
   ) {
     const [storeOwner, store] = await Promise.all([
       this.storeOwnersService.findByID(storeOwnerID),
+      // this.storeOwnersService.findByID(storeOwnerID, createCategory),
+
       this.storesService.findByIDAndStoreOwner(storeID, storeOwnerID),
     ]);
 

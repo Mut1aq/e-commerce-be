@@ -11,10 +11,11 @@ import {
 import { i18nValidationMessage } from 'nestjs-i18n';
 import { I18nTranslations } from 'resources/generated/i18n.generated';
 import { nYearsAgo } from 'shared/util/date.util';
+import { CreatePermissionDto } from './create-permission.dto';
 
-export class CreateStoreOwnerDto {
+export class CreateStoreEmployeeDto {
   @ApiProperty({
-    description: "User's email",
+    description: "Store Employee's email",
     example: 'mut1aq@gmail.com',
     isArray: false,
     maxLength: 320,
@@ -46,7 +47,7 @@ export class CreateStoreOwnerDto {
   email!: string;
 
   @ApiProperty({
-    description: "User's firstName",
+    description: "Store Employee's firstName",
     example: 'mut1aq',
     isArray: false,
     maxLength: 50,
@@ -74,7 +75,7 @@ export class CreateStoreOwnerDto {
   firstName!: string;
 
   @ApiProperty({
-    description: "User's lastName",
+    description: "Store Employee's lastName",
     example: 'mut1aq',
     isArray: false,
     maxLength: 50,
@@ -102,7 +103,7 @@ export class CreateStoreOwnerDto {
   lastName!: string;
 
   @ApiProperty({
-    description: "User's birthday",
+    description: "Store Employee's birthday",
     type: 'date string',
     required: true,
     example: 'MM/DD/YYYY',
@@ -119,7 +120,7 @@ export class CreateStoreOwnerDto {
   birthday!: string;
 
   @ApiProperty({
-    description: "User's phoneNumber",
+    description: "Store Employee's phoneNumber",
     example: '0795367929',
     isArray: false,
     maxLength: 18,
@@ -147,7 +148,7 @@ export class CreateStoreOwnerDto {
   phoneNumber!: string;
 
   @ApiProperty({
-    description: "User's identity",
+    description: "Store Employee's identity",
     example: 'google.com',
     isArray: false,
     maxLength: 2048,
@@ -173,4 +174,32 @@ export class CreateStoreOwnerDto {
     message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty'),
   })
   identity!: string;
+
+  @ApiProperty({
+    type: CreatePermissionDto,
+    isArray: false,
+    description: 'OBject describing permissions on the domains',
+    required: true,
+    name: 'permission',
+  })
+  @IsNotEmpty({
+    message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty'),
+  })
+  permission!: CreatePermissionDto;
+
+  @ApiProperty({
+    description: "Store Employee's birthday",
+    type: 'date string',
+    required: true,
+    example: 'MM/DD/YYYY',
+    name: 'birthday',
+    minimum: 13,
+  })
+  @Transform(({ value }) => new Date(value))
+  @IsNotEmpty({
+    message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty', {
+      property: 'Birth Day',
+    }),
+  })
+  hireDate!: string;
 }
