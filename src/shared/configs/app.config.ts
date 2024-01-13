@@ -4,6 +4,7 @@ import { HttpExceptionFilter } from 'core/exception-filters/http-exception.filte
 import { MongoDbDuplicateKeyFilter } from 'core/exception-filters/mongo-db-duplicate-key.filter';
 import { MongooseValidationFilter } from 'core/exception-filters/mongoose-validation.filter';
 import { AccessTokenGuard } from 'core/guards/access-token.guard';
+import { PermissionsGuard } from 'core/guards/permissions.guard';
 import { RolesGuard } from 'core/guards/roles.guard';
 import { LoggingInterceptor } from 'core/interceptors/logging.interceptor';
 import { ResponseMappingInterceptor } from 'core/interceptors/response-mapping.interceptor';
@@ -16,6 +17,11 @@ const accessTokenGuardProvider: Provider<AccessTokenGuard> = {
 const rolesGuardProvider: Provider<RolesGuard> = {
   provide: APP_GUARD,
   useClass: RolesGuard,
+};
+
+const permissionsGuardProvider: Provider<PermissionsGuard> = {
+  provide: APP_GUARD,
+  useClass: PermissionsGuard,
 };
 
 const httpExceptionFilterProvider: Provider<HttpExceptionFilter> = {
@@ -49,7 +55,11 @@ export const filters = [
   mongoDbDuplicateKeyFilterProvider,
   mongooseValidationFilterProvider,
 ];
-export const guards = [accessTokenGuardProvider, rolesGuardProvider];
+export const guards = [
+  accessTokenGuardProvider,
+  rolesGuardProvider,
+  permissionsGuardProvider,
+];
 export const interceptors = [
   loggingInterceptorProvider,
   responseMappingInterceptorProvider,

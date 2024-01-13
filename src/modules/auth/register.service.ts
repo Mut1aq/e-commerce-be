@@ -9,6 +9,8 @@ import { UserDocument } from 'modules/system-users/users/types/user-document.typ
 import { ResponseFromServiceI } from 'shared/interfaces/general/response-from-service.interface';
 import { generate } from 'generate-password';
 import { StoreOwnersService } from 'modules/system-users/store-owners/store-owners.service';
+import { StoreEmployeesService } from 'modules/system-users/store-employees/store-employees.service';
+import { CreateStoreEmployeeDto } from 'modules/system-users/store-employees/dto/create-store-employee.dto';
 
 @Injectable()
 export class RegisterService {
@@ -16,6 +18,7 @@ export class RegisterService {
     private readonly customersService: CustomersService,
     private readonly adminsService: AdminsService,
     private readonly storeOwnersService: StoreOwnersService,
+    private readonly storeEmployeesService: StoreEmployeesService,
   ) {}
   async registerCustomer(
     createCustomerDto: CreateCustomerDto,
@@ -85,6 +88,41 @@ export class RegisterService {
         args: { entity: 'entities.user' },
       },
       data: createdStoreOwner,
+    };
+  }
+
+  async registerStoreEmployee(
+    createStoreEmployeeDto: CreateStoreEmployeeDto,
+    creatorID: string,
+  ) {
+    const password = generate({
+      length: 10,
+      numbers: true,
+      uppercase: true,
+      lowercase: true,
+      symbols: true,
+      strict: true,
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    (
+      createStoreEmployeeDto as CreateStoreEmployeeDto & { password: string }
+    ).password = hashedPassword;
+
+    const createdStoreEmployee =
+      await this.storeEmployeesService.createStoreEmployeeForAuth(
+        createStoreEmployeeDto,
+        creatorID,
+      );
+
+    return {
+      httpStatus: HttpStatus.CREATED,
+      message: {
+        translationKey: 'shared.success.create',
+        args: { entity: 'entities.user' },
+      },
+      data: createdStoreEmployee,
     };
   }
 }

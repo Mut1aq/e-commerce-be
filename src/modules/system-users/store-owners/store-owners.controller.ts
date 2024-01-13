@@ -1,24 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { StoreOwnersService } from './store-owners.service';
-import { CreateStoreOwnerDto } from './dto/create-store-owner.dto';
 import { UpdateStoreOwnerDto } from './dto/update-store-owner.dto';
 
 @Controller('store-owners')
 export class StoreOwnersController {
   constructor(private readonly storeOwnersService: StoreOwnersService) {}
-
-  @Post()
-  create(@Body() createStoreOwnerDto: CreateStoreOwnerDto) {
-    return this.storeOwnersService.createStoreOwnerForAuth(createStoreOwnerDto);
-  }
 
   @Get()
   findAll() {
