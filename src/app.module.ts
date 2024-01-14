@@ -22,6 +22,7 @@ import { ConfigModule } from '@nestjs/config';
 import helmet from 'helmet';
 import { RequestIdMiddleware } from 'core/middlewares/request-id.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FileUploadModule } from 'core/lib/file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { MongooseModule } from '@nestjs/mongoose';
     CronJobModule,
     I18nModule.forRoot(i18nOptions),
     JwtModule.registerAsync(jwtOptions),
-    CacheModule.register('cache-manager-redis-yet'),
+    CacheModule.register(),
+    FileUploadModule.register(),
     MongooseModule.forRootAsync(mongooseOptions),
     ModulesModule,
   ],

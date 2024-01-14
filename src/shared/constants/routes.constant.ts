@@ -11,13 +11,7 @@ export const ROUTES = {
 
   USERS: {
     CONTROLLER: 'users',
-    FIND_ALL: '',
-    FIND_ONE: ':userID',
-    UPDATE_ONE: 'update',
-    DELETE_ONE: 'delete',
-    FOLLOW_UNFOLLOW: 'follow-unfollow/:userIDToPerformActionOn',
-    FOLLOWERS: 'followers/:userIDToView',
-    FOLLOWINGS: 'followings/:userIDToView',
+    UPDATE_PROFILE: 'profile',
   },
 
   STORES: {
