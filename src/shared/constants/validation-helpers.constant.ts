@@ -88,3 +88,6 @@ export const uppercaseLetters = [
   'Y',
   'Z',
 ];
+
+export const MAX_IMAGE_FILE_SIZE_IN_MG = 1024 * 1024 * 5;
+export const ALLOWED_IMAGE_FORMATS = ['.png', '.jpeg', '.bmp', '.jpg'];

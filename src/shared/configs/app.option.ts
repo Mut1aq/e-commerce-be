@@ -69,6 +69,10 @@ export const configOptions: ConfigModuleOptions = {
     ALLOWED_HOSTS: Joi.string().min(1).required(),
     PREFIX: Joi.string().min(3).max(10).required(),
     APP_NAME: Joi.string().min(3).max(30).required(),
+    CLOUDINARY_API_KEY: Joi.number().required(),
+    CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+    CLOUDINARY_API_SECRET: Joi.string().required(),
+    CLOUD_SOLUTION: Joi.string().valid('CLOUDINARY').required(),
   }),
 };
 

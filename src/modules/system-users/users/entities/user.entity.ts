@@ -15,9 +15,11 @@ import {
   storeOwnerPropertiesSchema,
   StoreOwnerProperties,
 } from 'modules/system-users/store-owners/entities/store-owner-properties.entity';
+import { mediaObjectProp } from 'shared/constants/media-object-property.constant';
 
 import { SCHEMAS } from 'shared/constants/schemas.constant';
 import { Role } from 'shared/enums/role.enum';
+import { MediaObjectI } from 'shared/interfaces/db/media-object.interface';
 import { AccountStatus } from '../enums/account-status.enum';
 
 @Schema({ timestamps: true })
@@ -34,6 +36,9 @@ export class User {
 
   @Prop({ type: String, required: true })
   password!: string;
+
+  @Prop(mediaObjectProp)
+  profilePicture!: MediaObjectI;
 
   @Prop({
     type: Number,

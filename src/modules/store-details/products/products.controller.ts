@@ -13,6 +13,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ROUTES } from 'shared/constants/routes.constant';
 import { UserID } from 'core/decorators/user-id.decorator';
+import { ParseMongoIdPipe } from 'core/pipes/parse-mongo-id.pipe';
 
 @ApiTags(ROUTES.PRODUCTS.CONTROLLER)
 @Controller(ROUTES.PRODUCTS.CONTROLLER)
@@ -22,7 +23,7 @@ export class ProductsController {
   @Post(ROUTES.PRODUCTS.CREATE)
   create(
     @Body() createProductDto: CreateProductDto,
-    @Param('categoryID') categoryID: string,
+    @Param('categoryID', new ParseMongoIdPipe()) categoryID: string,
     @UserID() storeOwnerID: string,
   ) {
     return this.productsService.create(
