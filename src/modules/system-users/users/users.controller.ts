@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger/dist/decorators';
 import { UserID } from 'core/decorators/user-id.decorator';
 import { ROUTES } from 'shared/constants/routes.constant';
+import { MAX_IMAGE_FILE_SIZE_IN_BYTES } from 'shared/constants/validation-helpers.constant';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilePictureFormatValidationPipe } from './pipes/profile-picture-format-validation.pipe';
 import { ProfilePictureSizeValidationPipe } from './pipes/profile-picture-size-validation.pipe';
@@ -20,7 +21,15 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Patch(ROUTES.USERS.UPDATE_PROFILE)
-  @UseInterceptors(FileInterceptor('profilePicture'))
+  @UseInterceptors(
+    FileInterceptor('profilePicture', {
+      limits: {
+        files: 1,
+        fields: 2,
+        fileSize: MAX_IMAGE_FILE_SIZE_IN_BYTES,
+      },
+    }),
+  )
   updateProfile(
     @UserID() userID: string,
     @Body() updateProfileDto: UpdateProfileDto,
@@ -28,8 +37,12 @@ export class UsersController {
       new ProfilePictureSizeValidationPipe(),
       new ProfilePictureFormatValidationPipe(),
     )
-    file: Express.Multer.File,
+    profilePicture?: Express.Multer.File,
   ) {
-    return this.usersService.updateProfile(userID, updateProfileDto, file);
+    return this.usersService.updateProfile(
+      userID,
+      updateProfileDto,
+      profilePicture,
+    );
   }
 }

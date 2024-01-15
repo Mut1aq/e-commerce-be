@@ -4,6 +4,7 @@ import { StoreDocument } from 'modules/store-details/stores/types/store-document
 import { UserDocument } from 'modules/system-users/users/types/user-document.type';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
+import { MediaObjectI } from 'shared/interfaces/db/media-object.interface';
 import { CategoryDocument } from '../types/category-document.type';
 
 @Schema({ timestamps: true })
@@ -16,8 +17,16 @@ export class Category {
   })
   name!: string;
 
-  @Prop({ type: String, maxlength: 2048, minlength: 3, required: true })
-  coverPhoto!: string;
+  @Prop({
+    type: {
+      url: { type: String, required: true },
+      solutionID: { type: String, required: true },
+      fileName: { type: String, required: true },
+      format: { type: String, required: true },
+    },
+    required: true,
+  })
+  coverPhoto!: MediaObjectI;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.PRODUCT }] })
   products!: ProductDocument[];

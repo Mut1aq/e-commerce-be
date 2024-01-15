@@ -10,6 +10,9 @@ export class StoreEmployeeProperties {
   @Prop({ type: String, maxlength: 2048, minlength: 3, required: true })
   identity!: string;
 
+  // @Prop(mediaObjectProp)
+  // identity!: MediaObjectI;
+
   @Prop({
     type: String,
     minlength: 2,

@@ -7,4 +7,6 @@ export const SCHEMAS = {
   VARIANT: 'Variant',
   ORDER: 'Order',
   REVIEW: 'Review',
+  MESSAGE: 'Message',
+  ROOM: 'Room',
 };

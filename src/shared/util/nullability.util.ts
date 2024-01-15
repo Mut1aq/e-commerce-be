@@ -16,3 +16,12 @@ export const checkArrayNullability = (arr?: unknown[]) => {
     arr?.length > 0
   );
 };
+
+export const checkObjectNullability = (obj?: object) => {
+  return (
+    obj != null &&
+    typeof obj === 'object' &&
+    obj != undefined &&
+    Object.keys(obj ?? {}).length > 0
+  );
+};

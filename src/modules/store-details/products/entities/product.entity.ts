@@ -4,6 +4,7 @@ import { VariantDocument } from 'modules/store-details/variants/types/variant-do
 import { UserDocument } from 'modules/system-users/users/types/user-document.type';
 import { Types } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
+import { MediaObjectI } from 'shared/interfaces/db/media-object.interface';
 
 @Schema({ timestamps: true })
 export class Product {
@@ -58,14 +59,34 @@ export class Product {
   discountedRate?: number;
 
   @Prop({
-    type: [{ type: String, maxlength: 2048, minlength: 3, required: true }],
+    type: [
+      {
+        type: {
+          url: { type: String, required: true },
+          solutionID: { type: String, required: true },
+          fileName: { type: String, required: true },
+          format: { type: String, required: true },
+        },
+      },
+    ],
+    required: true,
   })
-  photos!: string[];
+  photos!: MediaObjectI[];
 
   @Prop({
-    type: [{ type: String, maxlength: 2048, minlength: 3, required: true }],
+    type: [
+      {
+        type: {
+          url: { type: String, required: true },
+          solutionID: { type: String, required: true },
+          fileName: { type: String, required: true },
+          format: { type: String, required: true },
+        },
+      },
+    ],
+    default: undefined,
   })
-  videos!: string[];
+  videos!: MediaObjectI[];
 
   @Prop({ type: [{ type: Types.ObjectId, ref: SCHEMAS.VARIANT }] })
   variants!: VariantDocument[];

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -44,4 +45,26 @@ export class UpdateProfileDto {
   })
   @IsOptional()
   email?: string;
+
+  @ApiProperty({
+    description: 'Flag to indicate if the profile picture should be deleted',
+    example: true,
+    isArray: false,
+    name: 'shouldDeleteProfilePicture',
+    required: true,
+    type: Boolean,
+  })
+  @IsBoolean()
+  @Type(() => String)
+  @Transform(({ value }) => {
+    if (value === 'true') {
+      return true;
+    } else {
+      return false;
+    }
+  })
+  @IsNotEmpty({
+    message: i18nValidationMessage<I18nTranslations>('validation.isNotEmpty'),
+  })
+  shouldDeleteProfilePicture!: boolean;
 }
