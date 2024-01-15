@@ -9,14 +9,14 @@ import { extname } from 'path';
 import { ALLOWED_IMAGE_FORMATS } from 'shared/constants/validation-helpers.constant';
 
 @Injectable()
-export class ProfilePictureFormatValidationPipe
+export class VoiceFormatValidationPipe
   implements
     PipeTransform<Express.Multer.File, Express.Multer.File | undefined>
 {
-  transform(profilePicture: Express.Multer.File, _: ArgumentMetadata) {
-    if (!profilePicture) return;
+  transform(voice: Express.Multer.File, _: ArgumentMetadata) {
+    if (!voice) return;
 
-    const { originalname } = profilePicture;
+    const { originalname } = voice;
     const profilePictureExtension = extname(originalname);
     const isProfilePictureExtensionAllowed = ALLOWED_IMAGE_FORMATS.includes(
       profilePictureExtension,
@@ -29,6 +29,6 @@ export class ProfilePictureFormatValidationPipe
         HttpStatus.BAD_REQUEST,
       );
 
-    return profilePicture;
+    return voice;
   }
 }

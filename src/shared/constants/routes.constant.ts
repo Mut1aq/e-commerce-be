@@ -42,6 +42,35 @@ export const ROUTES = {
     DELETE_ONE: ':variantID',
   },
 
+  ORDERS: {
+    CONTROLLER: 'orders',
+  },
+
+  REVIEWS: {
+    CONTROLLER: 'reviews',
+  },
+
+  ROOMS: {
+    CONTROLLER: 'rooms',
+    CREATE: '',
+    FIND_ALL: '',
+    FIND_ONE: ':roomID',
+    UPDATE_ONE: ':roomID',
+    DELETE_ONE: ':roomID',
+  },
+
+  MESSAGES: {
+    CONTROLLER: 'messages',
+    CREATE: ':roomID',
+    CREATE_WITH_VOICE: ':roomID/voice',
+    CREATE_WITH_VIDEOS: ':roomID/videos',
+    CREATE_WITH_IMAGES: ':roomID/images',
+    CREATE_WITH_DOCUMENTS: ':roomID/documents',
+    FIND_ALL: ':roomID',
+    UPDATE_ONE: ':messageID',
+    DELETE_ONE: ':messageID',
+  },
+
   CATEGORIES: {
     CONTROLLER: 'categories',
     CREATE: ':storeID',

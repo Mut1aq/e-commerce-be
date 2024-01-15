@@ -89,5 +89,18 @@ export const uppercaseLetters = [
   'Z',
 ];
 
-export const MAX_IMAGE_FILE_SIZE_IN_MG = 1024 * 1024 * 5;
+export const MAX_IMAGE_FILE_SIZE_IN_BYTES = 1024 * 1024 * 5;
+export const MAX_VIDEO_FILE_SIZE_IN_BYTES = 1024 * 1024 * 25;
+export const MAX_DOCUMENT_FILE_SIZE_IN_BYTES = 1024 * 1024 * 1;
+export const MAX_VOICE_FILE_SIZE_IN_BYTES = 1024 * 1024 * 10;
+
 export const ALLOWED_IMAGE_FORMATS = ['.png', '.jpeg', '.bmp', '.jpg'];
+export const ALLOWED_VIDEOS_FORMATS = ['.mp4', '.mov'];
+export const ALLOWED_DOCUMENTS_FORMATS = [
+  '.pdf',
+  '.docs',
+  '.docx',
+  '.doc',
+  '.pptx',
+];
+export const ALLOWED_VOICE_FORMATS = ['.mp3'];

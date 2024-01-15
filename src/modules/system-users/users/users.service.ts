@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums';
+import { HttpException } from '@nestjs/common/exceptions';
 import { InjectModel } from '@nestjs/mongoose';
 import { FileUploadService } from 'core/lib/file-upload/file-upload.service';
 import { Model } from 'mongoose';
 import { SCHEMAS } from 'shared/constants/schemas.constant';
+import { checkObjectNullability } from 'shared/util/nullability.util';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { User } from './entities/user.entity';
@@ -42,15 +45,64 @@ export class UsersService {
   }
 
   async updateProfile(
-    _userID: string,
-    _updateProfileDto: UpdateProfileDto,
-    _file: Express.Multer.File,
+    userID: string,
+    updateProfileDto: UpdateProfileDto,
+    profilePicture?: Express.Multer.File,
   ) {
-    const profilePictureMediaObject =
-      await this.fileUploadService.uploadProfilePicture(
-        _file,
-        '65a40fb98bde18472673fdef',
+    const { email } = updateProfileDto;
+    const user = await this.findByID(userID);
+    if (!user)
+      throw new HttpException(
+        'User was not found can not make an update',
+        HttpStatus.NOT_FOUND,
       );
-    console.log(profilePictureMediaObject);
+    !email ? null : (user.email = email);
+
+    const shouldAddProfilePictureToUserWithNoProfilePicture =
+      !checkObjectNullability(user.profilePicture) &&
+      checkObjectNullability(profilePicture);
+    const shouldDeleteProfilePictureAndAddNewProfilePicture =
+      checkObjectNullability(user.profilePicture) &&
+      checkObjectNullability(profilePicture);
+
+    const shouldDeleteProfilePicture =
+      updateProfileDto.shouldDeleteProfilePicture &&
+      checkObjectNullability(user.profilePicture);
+
+    if (shouldAddProfilePictureToUserWithNoProfilePicture) {
+      const profilePictureMediaObject =
+        await this.fileUploadService.uploadProfilePictureForUser(
+          profilePicture!,
+          user.id,
+        );
+
+      user.profilePicture = profilePictureMediaObject;
+    } else if (shouldDeleteProfilePictureAndAddNewProfilePicture) {
+      const [profilePictureMediaObject, _] = await Promise.all([
+        this.fileUploadService.uploadProfilePictureForUser(
+          profilePicture!,
+          user.id,
+        ),
+        this.fileUploadService.deleteResource(user.profilePicture!.solutionID),
+      ]);
+
+      user.profilePicture = profilePictureMediaObject;
+    } else if (shouldDeleteProfilePicture) {
+      await this.fileUploadService.deleteResource(
+        user.profilePicture!.solutionID,
+      );
+
+      user.profilePicture = undefined;
+    }
+    await user.save();
+
+    return {
+      httpStatus: HttpStatus.CREATED,
+      message: {
+        translationKey: 'shared.success.update',
+        args: { entity: 'entities.user' },
+      },
+      data: user,
+    };
   }
 }
