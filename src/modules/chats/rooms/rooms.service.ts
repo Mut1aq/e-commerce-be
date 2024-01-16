@@ -34,20 +34,31 @@ export class RoomsService {
 
   findByIDAndChatParticipant(roomID: string, userID: string | Types.ObjectId) {
     userID = new Types.ObjectId(userID);
-    return this.roomModel.findOne<RoomDocument>({
-      $and: [
-        { _id: new Types.ObjectId(roomID) },
+    return this.roomModel
+      .findOne<RoomDocument>({
+        $and: [
+          { _id: new Types.ObjectId(roomID) },
+          {
+            $or: [
+              {
+                customer: userID,
+              },
+              {
+                employee: userID,
+              },
+            ],
+          },
+        ],
+      })
+      .populate([
         {
-          $or: [
-            {
-              customer: userID,
-            },
-            {
-              employee: userID,
-            },
-          ],
+          path: 'customer',
+          model: SCHEMAS.USER,
         },
-      ],
-    });
+        {
+          path: 'employee',
+          model: SCHEMAS.USER,
+        },
+      ]);
   }
 }

@@ -1,5 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { HttpExceptionFilter } from 'core/exception-filters/http-exception.filter';
 import { MongoDbDuplicateKeyFilter } from 'core/exception-filters/mongo-db-duplicate-key.filter';
 import { MongooseValidationFilter } from 'core/exception-filters/mongoose-validation.filter';
@@ -22,6 +23,11 @@ const rolesGuardProvider: Provider<RolesGuard> = {
 const permissionsGuardProvider: Provider<PermissionsGuard> = {
   provide: APP_GUARD,
   useClass: PermissionsGuard,
+};
+
+const throttlerGuardProvider: Provider<ThrottlerGuard> = {
+  provide: APP_GUARD,
+  useClass: ThrottlerGuard,
 };
 
 const httpExceptionFilterProvider: Provider<HttpExceptionFilter> = {
@@ -59,6 +65,7 @@ export const guards = [
   accessTokenGuardProvider,
   rolesGuardProvider,
   permissionsGuardProvider,
+  throttlerGuardProvider,
 ];
 export const interceptors = [
   loggingInterceptorProvider,

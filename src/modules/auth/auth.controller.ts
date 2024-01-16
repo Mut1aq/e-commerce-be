@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger/dist';
 import { ApiResponse } from '@nestjs/swagger/dist/decorators';
+import { SkipThrottle } from '@nestjs/throttler/dist/throttler.decorator';
 import { Public } from 'core/decorators/public.decorator';
 import { Roles } from 'core/decorators/roles.decorator';
 import { UserID } from 'core/decorators/user-id.decorator';
@@ -15,6 +16,7 @@ import { LoginService } from './login.service';
 import { LogoutService } from './logout.service';
 import { RegisterService } from './register.service';
 
+@SkipThrottle()
 @ApiTags(ROUTES.AUTH.CONTROLLER)
 @Controller(ROUTES.AUTH.CONTROLLER)
 export class AuthController {
@@ -32,6 +34,7 @@ export class AuthController {
   }
 
   @Public()
+  @SkipThrottle({ default: false })
   @Post(ROUTES.AUTH.LOG_USER_IN)
   logUserIn(@Body() logUserInDto: LogUserInDto) {
     return this.loginService.logUserIn(logUserInDto);

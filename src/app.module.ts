@@ -11,6 +11,7 @@ import {
   i18nOptions,
   jwtOptions,
   mongooseOptions,
+  throttlerOptions,
 } from 'shared/configs/app.option';
 import { CacheModule } from 'core/lib/cache/cache.module';
 import { I18nModule } from 'nestjs-i18n';
@@ -23,6 +24,7 @@ import helmet from 'helmet';
 import { RequestIdMiddleware } from 'core/middlewares/request-id.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FileUploadModule } from 'core/lib/file-upload/file-upload.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { FileUploadModule } from 'core/lib/file-upload/file-upload.module';
     ScheduleModule.forRoot(),
     CronJobModule,
     I18nModule.forRoot(i18nOptions),
+    ThrottlerModule.forRoot(throttlerOptions),
     JwtModule.registerAsync(jwtOptions),
     CacheModule.register(),
     FileUploadModule.register(),

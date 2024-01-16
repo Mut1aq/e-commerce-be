@@ -164,7 +164,7 @@ export class CloudinaryService {
           {
             backup: true,
             folder: folderName,
-            resource_type: 'image',
+            resource_type: 'video',
             tags,
             use_filename: true,
           },

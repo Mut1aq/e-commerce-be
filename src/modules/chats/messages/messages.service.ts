@@ -52,7 +52,7 @@ export class MessagesService {
     roomID: string,
     userID: string,
     createMessageDto: CreateMessageDto,
-    documents?: Express.Multer.File[],
+    documents: Express.Multer.File[],
   ) {
     const [user, room] = await Promise.all([
       this.usersService.findByID(userID),
@@ -73,9 +73,12 @@ export class MessagesService {
         'Must send files to send message',
         HttpStatus.BAD_REQUEST,
       );
-
     const uploadedMediaObjects =
-      await this.fileUploadService.uploadDocumentsForMessage(documents, roomID);
+      await this.fileUploadService.uploadDocumentsForMessage(
+        documents!,
+        roomID,
+      );
+
     messageToCreate.documents = uploadedMediaObjects;
 
     await messageToCreate.save();
@@ -94,7 +97,7 @@ export class MessagesService {
     roomID: string,
     userID: string,
     createMessageDto: CreateMessageDto,
-    images?: Express.Multer.File[],
+    images: Express.Multer.File[],
   ) {
     const [user, room] = await Promise.all([
       this.usersService.findByID(userID),
@@ -136,7 +139,7 @@ export class MessagesService {
     roomID: string,
     userID: string,
     createMessageDto: CreateMessageDto,
-    videos?: Express.Multer.File[],
+    videos: Express.Multer.File[],
   ) {
     const [user, room] = await Promise.all([
       this.usersService.findByID(userID),
@@ -178,7 +181,7 @@ export class MessagesService {
     roomID: string,
     userID: string,
     createMessageDto: CreateMessageDto,
-    voice?: Express.Multer.File,
+    voice: Express.Multer.File,
   ) {
     const [user, room] = await Promise.all([
       this.usersService.findByID(userID),

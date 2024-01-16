@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chats/chat/chat.module';
+import { MessagesModule } from './chats/messages/messages.module';
+import { RoomsModule } from './chats/rooms/rooms.module';
 import { CountriesModule } from './countries/countries.module';
 import { CategoriesModule } from './store-details/categories/categories.module';
 import { ProductsModule } from './store-details/products/products.module';
@@ -22,6 +25,9 @@ import { UsersModule } from './system-users/users/users.module';
     CategoriesModule,
     ProductsModule,
     VariantsModule,
+    ChatModule,
+    RoomsModule,
+    MessagesModule,
   ],
 })
 export class ModulesModule {}
