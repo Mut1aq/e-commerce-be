@@ -38,15 +38,6 @@ import { DocumentsSizeValidationPipe } from './pipes/documents-size-validation.p
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  @Post(ROUTES.MESSAGES.CREATE)
-  create(
-    @Body() createMessageDto: CreateMessageDto,
-    @Param('roomID', new ParseMongoIdPipe()) roomID: string,
-    @UserID() userID: string,
-  ) {
-    return this.messagesService.create(roomID, userID, createMessageDto);
-  }
-
   @Post(ROUTES.MESSAGES.CREATE_WITH_DOCUMENTS)
   @UseInterceptors(
     FilesInterceptor('documents', 10, {
@@ -149,7 +140,7 @@ export class MessagesController {
       new VoiceSizeValidationPipe(),
       new VoiceFormatValidationPipe(),
     )
-    voice?: Express.Multer.File,
+    voice: Express.Multer.File,
   ) {
     return this.messagesService.createWithVoice(
       roomID,

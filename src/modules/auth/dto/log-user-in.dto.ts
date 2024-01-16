@@ -46,7 +46,7 @@ export class LogUserInDto {
     type: String,
   })
   @MaxLength(30, {
-    message: i18nValidationMessage<I18nTranslations>('validation.minLength', {
+    message: i18nValidationMessage<I18nTranslations>('validation.maxLength', {
       max: 30,
     }),
   })
