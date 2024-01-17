@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger/dist';
 import { ApiResponse } from '@nestjs/swagger/dist/decorators';
 import { SkipThrottle } from '@nestjs/throttler/dist/throttler.decorator';
@@ -15,6 +15,7 @@ import { LogUserInDto } from './dto/log-user-in.dto';
 import { LoginService } from './login.service';
 import { LogoutService } from './logout.service';
 import { RegisterService } from './register.service';
+import { Response } from 'express';
 
 @SkipThrottle()
 @ApiTags(ROUTES.AUTH.CONTROLLER)
@@ -36,13 +37,19 @@ export class AuthController {
   @Public()
   @SkipThrottle({ default: false })
   @Post(ROUTES.AUTH.LOG_USER_IN)
-  logUserIn(@Body() logUserInDto: LogUserInDto) {
-    return this.loginService.logUserIn(logUserInDto);
+  logUserIn(
+    @Body() logUserInDto: LogUserInDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.loginService.logUserIn(logUserInDto, response);
   }
 
   @Post(ROUTES.AUTH.LOG_OUT)
-  logUserOut(@UserID() userID: string) {
-    return this.logoutService.logUserOut(userID);
+  logUserOut(
+    @UserID() userID: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return this.logoutService.logUserOut(userID, response);
   }
 
   // @Public()

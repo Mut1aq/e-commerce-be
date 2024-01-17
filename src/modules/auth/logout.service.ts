@@ -3,6 +3,7 @@ import { CacheService } from 'core/lib/cache/cache.service';
 import { ResponseFromServiceI } from 'shared/interfaces/general/response-from-service.interface';
 import { UsersService } from 'modules/system-users/users/users.service';
 import { UserDocument } from 'modules/system-users/users/types/user-document.type';
+import { Response } from 'express';
 
 @Injectable()
 export class LogoutService {
@@ -13,10 +14,12 @@ export class LogoutService {
 
   async logUserOut(
     userID: string,
+    response: Response,
   ): Promise<ResponseFromServiceI<UserDocument>> {
     const userToLogout = await this.userService.findByID(userID);
     if (!userToLogout)
       throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    response.clearCookie('accessToken');
     await this.cacheService.deleteField(userID + '', 'accessToken');
 
     return {

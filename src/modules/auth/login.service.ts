@@ -6,8 +6,12 @@ import { CacheService } from 'core/lib/cache/cache.service';
 import { CacheObjectI } from 'core/lib/cache/interfaces/cache-object.interface';
 import { UsersService } from 'modules/system-users/users/users.service';
 import { ResponseFromServiceI } from 'shared/interfaces/general/response-from-service.interface';
-import { TokenPayloadI } from 'shared/interfaces/http/token-payload.interface';
+import {
+  PrivateTokenPayloadI,
+  PublicTokenPayloadI,
+} from 'shared/interfaces/http/token-payload.interface';
 import { LogUserInDto } from './dto/log-user-in.dto';
+import { Response } from 'express';
 
 @Injectable()
 export class LoginService {
@@ -20,6 +24,7 @@ export class LoginService {
 
   async logUserIn(
     logUserInDto: LogUserInDto,
+    response: Response,
   ): Promise<ResponseFromServiceI<string>> {
     const { credentials } = logUserInDto;
 
@@ -43,8 +48,13 @@ export class LoginService {
         HttpStatus.UNAUTHORIZED,
       );
 
-    const payload: TokenPayloadI = {
+    const privatePayload: PrivateTokenPayloadI = {
       sub: user.id,
+      role: user.role,
+      permission: user.storeEmployeeProperties?.permission,
+    };
+
+    const publicPayload: PublicTokenPayloadI = {
       role: user.role,
       permission: user.storeEmployeeProperties?.permission,
     };
@@ -53,12 +63,19 @@ export class LoginService {
       user.id + '',
     );
 
-    let accessToken = undefined;
+    let permissionToken: string | undefined = undefined;
+
     if (!userFromCache?.accessToken) {
-      accessToken = this.jwtService.sign(payload, {
+      const accessToken = this.jwtService.sign(privatePayload, {
         secret: this.configService.get<string>('USER_ACCESS_TOKEN_SECRET')!,
         expiresIn: this.configService.get<string>(
           'USER_ACCESS_TOKEN_EXPIRES_IN',
+        )!,
+      });
+      permissionToken = this.jwtService.sign(publicPayload, {
+        secret: this.configService.get<string>('USER_PERMISSION_TOKEN_SECRET')!,
+        expiresIn: this.configService.get<string>(
+          'USER_PERMISSION_TOKEN_EXPIRES_IN',
         )!,
       });
 
@@ -71,17 +88,33 @@ export class LoginService {
         86400 * 1000,
       );
 
+      const isProduction =
+        this.configService.get<string>('NODE_ENV') === 'prod';
+
+      response.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
+        sameSite: true,
+        expires: new Date(Date.now() + 86400 * 1000),
+        secure: isProduction,
+      });
+
       return {
-        data: accessToken,
+        data: permissionToken,
         message: 'auth.success.login',
         httpStatus: HttpStatus.OK,
       };
     }
 
-    accessToken = userFromCache?.accessToken;
+    permissionToken = this.jwtService.sign(publicPayload, {
+      secret: this.configService.get<string>('USER_PERMISSION_TOKEN_SECRET')!,
+      expiresIn: this.configService.get<string>(
+        'USER_PERMISSION_TOKEN_EXPIRES_IN',
+      )!,
+    });
 
     return {
-      data: accessToken,
+      data: permissionToken,
       message: 'auth.success.login',
       httpStatus: HttpStatus.OK,
     };

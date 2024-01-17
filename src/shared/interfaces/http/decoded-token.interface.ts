@@ -1,6 +1,6 @@
-import { TokenPayloadI } from './token-payload.interface';
+import { PrivateTokenPayloadI } from './token-payload.interface';
 
-export interface DecodedTokenI extends TokenPayloadI {
+export interface DecodedTokenI extends PrivateTokenPayloadI {
   iat: number;
   exp: number;
 }

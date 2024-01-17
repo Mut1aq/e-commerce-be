@@ -55,7 +55,7 @@ export const i18nOptions: I18nOptions = {
 };
 
 export const configOptions: ConfigModuleOptions = {
-  envFilePath: `.${process.env.NODE_ENV ?? 'development'}.env`,
+  envFilePath: `environments/.development.env`,
   isGlobal: true,
   cache: true,
   validationSchema: Joi.object({

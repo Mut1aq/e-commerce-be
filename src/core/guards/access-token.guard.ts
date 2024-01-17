@@ -30,19 +30,7 @@ export class AccessTokenGuard implements CanActivate {
 
       if (isPublic) return true;
 
-      const authorization = request.headers.authorization;
-
-      if (
-        !authorization ||
-        Array.isArray(authorization) ||
-        typeof authorization !== 'string'
-      )
-        throw new HttpException('Invalid Headers', HttpStatus.UNAUTHORIZED);
-
-      const [bearer, accessToken] = authorization.split(' ');
-
-      if (bearer !== 'Bearer')
-        throw new HttpException('Invalid Headers', HttpStatus.UNAUTHORIZED);
+      const accessToken = request.cookies['accessToken'];
 
       const decodedToken = this.jwtService.verify<DecodedTokenI>(accessToken, {
         secret: this.configService.get<string>('USER_ACCESS_TOKEN_SECRET')!,
@@ -52,10 +40,10 @@ export class AccessTokenGuard implements CanActivate {
 
       const cacheObject = await this.cacheService.get<CacheObjectI>(sub + '');
 
-      const isTokenFromCacheSameAsTokenFromHeaders =
+      const isTokenFromCacheSameAsTokenFromCookie =
         cacheObject?.accessToken === accessToken;
 
-      if (!isTokenFromCacheSameAsTokenFromHeaders)
+      if (!isTokenFromCacheSameAsTokenFromCookie)
         throw new HttpException('Nice Try', HttpStatus.UNAUTHORIZED);
 
       request.user = decodedToken;
